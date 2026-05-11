@@ -45,5 +45,5 @@ async function run() {
 run().catch(console.dir);
 
 app.listen(port, () => {
-    console.log(`PawMart Server is running on port: ${port}`);
+    console.log(`PawMart Server is running on port: http://localhost:${port}`);
 })
