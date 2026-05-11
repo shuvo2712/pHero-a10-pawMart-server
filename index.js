@@ -31,7 +31,14 @@ async function run() {
 
     // Get all listings
     app.get('/listings', async (req, res) => {
-        const cursor = listingsCollection.find().sort({ _id: -1 });
+        const cursor = listingsCollection.find().sort({ _id: 1 });
+        const result = await cursor.toArray();
+        res.send(result);
+    });
+
+    // Get latest 6 listings
+    app.get('/listings/latest', async (req, res) => {
+        const cursor = listingsCollection.find().sort({ _id: -1 }).limit(6);
         const result = await cursor.toArray();
         res.send(result);
     });
