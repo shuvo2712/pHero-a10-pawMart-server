@@ -26,13 +26,22 @@ async function run() {
     // Connect the client to the server
     await client.connect();
 
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    const database = client.db("pawMartDB");
+    const listingsCollection = database.collection("listings");
 
+    // Get all listings
+    app.get('/listings', async (req, res) => {
+        const cursor = listingsCollection.find().sort({ _id: -1 });
+        const result = await cursor.toArray();
+        res.send(result);
+    });
+
+    // Root route
     app.get('/', (req, res) => {
         res.send('PawMart server is running');
     })
+
+    console.log("Connected to MongoDB successfully!");
 
   } catch (error) {
     console.error("MongoDB Connection Error:", error);
@@ -45,5 +54,5 @@ async function run() {
 run().catch(console.dir);
 
 app.listen(port, () => {
-    console.log(`PawMart Server is running on port: http://localhost:${port}`);
+    console.log(`PawMart Server is running on port:        http://localhost:${port}/`);
 })
