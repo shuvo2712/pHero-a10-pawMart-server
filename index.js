@@ -111,7 +111,7 @@ app.post('/orders', async (req, res) => {
 // Get orders by user email
 app.get('/orders/email/:email', async (req, res) => {
     const email = req.params.email;
-    const query = { buyerEmail: email };
+    const query = { $or: [{ email: email }, { buyerEmail: email }] };
     const cursor = ordersCollection.find(query);
     const result = await cursor.toArray();
     res.send(result);
