@@ -58,6 +58,42 @@ async function run() {
         res.send(result);
     });
 
+    // Get listings by user email
+    app.get('/listings/email/:email', async (req, res) => {
+        const email = req.params.email;
+        const query = { email: email };
+        const cursor = listingsCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+    });
+
+    // Update listing by ID
+    app.patch('/listings/:id', async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: new ObjectId(id) };
+        const updatedDoc = {
+            $set: {
+                name: req.body.name,
+                category: req.body.category,
+                Price: Number(req.body.Price),
+                location: req.body.location,
+                description: req.body.description,
+                image: req.body.image,
+                date: req.body.date
+            }
+        };
+        const result = await listingsCollection.updateOne(filter, updatedDoc);
+        res.send(result);
+    });
+
+    // Delete listing by ID
+    app.delete('/listings/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await listingsCollection.deleteOne(query);
+        res.send(result);
+    });
+
     // Root route
     app.get('/', (req, res) => {
         res.send('PawMart server is running');
