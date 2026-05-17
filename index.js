@@ -51,6 +51,13 @@ async function run() {
         res.send(result);
     });
 
+    // Add new listing
+    app.post('/listings', async (req, res) => {
+        const newListing = req.body;
+        const result = await listingsCollection.insertOne(newListing);
+        res.send(result);
+    });
+
     // Root route
     app.get('/', (req, res) => {
         res.send('PawMart server is running');
