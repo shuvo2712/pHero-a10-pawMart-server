@@ -102,6 +102,15 @@ async function run() {
         res.send(result);
     });
 
+    // Get orders by user email
+    app.get('/orders/email/:email', async (req, res) => {
+        const email = req.params.email;
+        const query = { buyerEmail: email };
+        const cursor = ordersCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+    });
+
     // Root route
     app.get('/', (req, res) => {
         res.send('PawMart server is running');
