@@ -28,6 +28,7 @@ async function run() {
 
     const database = client.db("pawMartDB");
     const listingsCollection = database.collection("listings");
+    const ordersCollection = database.collection("orders");
 
     // Get all listings
     app.get('/listings', async (req, res) => {
@@ -75,7 +76,7 @@ async function run() {
             $set: {
                 name: req.body.name,
                 category: req.body.category,
-                Price: Number(req.body.Price),
+                price: Number(req.body.price),
                 location: req.body.location,
                 description: req.body.description,
                 image: req.body.image,
@@ -91,6 +92,13 @@ async function run() {
         const id = req.params.id;
         const query = { _id: new ObjectId(id) };
         const result = await listingsCollection.deleteOne(query);
+        res.send(result);
+    });
+
+    // New order / Adoption request
+    app.post('/orders', async (req, res) => {
+        const newOrder = req.body;
+        const result = await ordersCollection.insertOne(newOrder);
         res.send(result);
     });
 
